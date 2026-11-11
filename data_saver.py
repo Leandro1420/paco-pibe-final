@@ -10,8 +10,8 @@ def save_score(data):
 
 def get_scoreboard():
     scoreboard = load_data(SCOREBOARD_ROUTE)
-    scoreboard = sorted(scoreboard, key=lambda data: data.score)
-    return scoreboard
+    scoreboard = sorted(scoreboard, key=lambda data: -data['score'])
+    return scoreboard[:5]
 
 
 def save_data(data, route):

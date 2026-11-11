@@ -78,6 +78,9 @@ class Game():
         self.points.rect = pygame.rect.Rect(BOARD_WIDTH * SQUARE_SIZE + 10, 250, SCREEN_WIDTH - BOARD_WIDTH * SQUARE_SIZE - 20, 40)
         self.points.text = 'puntos: 0'
         self.points.border_width = 0
+        self.scores = 0
+
+        self.font = pygame.font.SysFont('consolas', 25)
 
         #player setup
         self.player = player.Player()
@@ -166,6 +169,18 @@ class Game():
         #draw points
         self.points.draw(surface)
 
+        #draw_scores
+
+        text_surface = self.font.render('    Puntajes', True, 'black')
+        text_rect = text_surface.get_rect(midleft = (BOARD_WIDTH * SQUARE_SIZE + 5, 340))
+        surface.blit(text_surface, text_rect)
+
+        for i in range(len(self.scores)):
+            mensaje = str(i+1) + 'º ' + str(self.scores[i]['name']) + ': ' + str(self.scores[i]['score'])
+            text_surface = self.font.render(mensaje, True, 'black')
+            text_rect = text_surface.get_rect(midleft = (BOARD_WIDTH * SQUARE_SIZE + 5, 385 + 30*i))
+            surface.blit(text_surface, text_rect)
+
 
     def lose_life(self):
         self.lifes -= 1
@@ -188,6 +203,7 @@ class Game():
 
 
     def reset(self):
+        self.get_best_5()
         #resetea todos los estados del juego
         self.paused = True
 
@@ -234,3 +250,8 @@ class Game():
         data = {'score': score, 'name': self.menu.name_bar.text}
         print("mondongo")
         data_saver.save_score(data)
+
+
+    def get_best_5(self):
+        print(data_saver.get_scoreboard())
+        self.scores = data_saver.get_scoreboard()
